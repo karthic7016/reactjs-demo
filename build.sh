@@ -1,1 +1,7 @@
 docker build -t capstoneproject .
+
+
+
+
+
+
