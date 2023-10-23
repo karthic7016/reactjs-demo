@@ -1,0 +1,37 @@
+pipeline {
+    agent { label 'dev'}
+
+    
+        stage('git clone') {
+            steps {
+                git branch: 'master',
+                url: 'https://github.com/karthic7016/reactjs-demo.git'
+            }
+        }
+
+        stage('build'){
+            steps {
+                sh 'chmod 777 build.sh'
+                sh './build.sh'
+            }
+        }
+
+        stage('deploy'){
+            steps {
+                sh 'chmod 777 deploy.sh'
+                sh './deploy.sh'
+            }
+        }
+
+        stage('pushing to dockerhub repo:dev') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
+                    sh 'docker tag capstoneproject $DOCKER_USERNAME/dev:capsproject'
+                    sh 'docker push karthic7016/dev:capsproject'
+                    }
+                    }
+                    }
+    }
+}
+
