@@ -1,0 +1,9 @@
+version: '3'
+services:
+  capstone:
+    image: karthic7016/dev:capstone-build
+    ports:
+      - "9000:80"
+
+
+
